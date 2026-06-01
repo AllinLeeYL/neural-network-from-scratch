@@ -5,7 +5,12 @@
 **.log
 **.synctex.gz(busy)
 **.drawio
+**.png
+**.jpg
+**.jpeg
 **.pyc
+
+**.pkl
 
 data/
 

@@ -11,6 +11,7 @@ The implementation currently supports:
 * Sigmoid activation
 * Softmax activation
 * Training and inference from scratch
+* flexible model architecture
 
 ## Motivation
 
@@ -33,13 +34,39 @@ git clone https://github.com/AllinLeeYL/neural-network-from-scratch.git
 3. Install the dependencies.
 
 ```bash
-pip install torch torchvision # or: pip install -r requirements.txt
+pip install torch torchvision matplotlib pickle # or: pip install -r requirements.txt
 ```
 
 4. Run the training script.
 
 ```bash
 python3 train.py
+```
+
+## Notes
+
+The model arch is not fixed, meaning the network strucute can be altered simply by modifing only the `self.graph` variable. The model architecture can be changed to 2 conv2d + 1 fully connected like this:
+
+```python
+    self.graph = [
+        Conv2dLayer(1, 10, 5, padding=1),
+        Sigmoid(),
+        Pooling(),
+        Conv2dLayer(10, 20, 5, padding=1),
+        Flatten(),
+        FullyConnectedLayer(11 * 11 * 20, 10),
+        Softmax()
+    ]
+```
+
+or even simpler two-layer fully connected architecture like this:
+
+```python
+    self.graph = [
+        Flatten(),
+        FullyConnectedLayer(28 * 28, 22 * 22),
+        FullyConnectedLayer(22 * 22, 10)
+    ]
 ```
 
 ## Forward Propagation and Backward Propagation
