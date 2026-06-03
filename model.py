@@ -1,7 +1,15 @@
 import numpy as np
 import pickle
 
-class Sigmoid:
+class Layer:
+    def __call__(self, X):
+        pass
+    def bp(self, gradient, **kwargs):
+        pass
+    def step(self, alpha):
+        pass
+
+class Sigmoid(Layer):
     def __call__(self, X):
         """
         activation function (used for conv2d)
@@ -14,40 +22,35 @@ class Sigmoid:
     def bp(self, gradient, **kwargs):
         return gradient * self.Y * (1 - self.Y)
 
-    def step(self, alpha):
-        pass
 
-
-class Softmax:
-    def __call__(self, x):
+class Softmax(Layer):
+    def __call__(self, X):
         """
         Activation function used for fully-connected layer
-        x: shape (batch, num_classes)
+        X: shape (batch, num_classes)
         returns: shape (batch, num_classes)
         """
         # subtract max for numerical stability
-        x = x - np.max(x, axis=1, keepdims=True)
-        exp_x = np.exp(x)
-        return exp_x / np.sum(exp_x, axis=1, keepdims=True)
+        self.X = X
+        X = X - np.max(X, axis=1, keepdims=True)
+        exp_X = np.exp(X)
+        self.Y = exp_X / np.sum(exp_X, axis=1, keepdims=True)
+        return self.Y
 
     def bp(self, gradient, **kwargs):
-        pass
-
-    def step(self, alpha):
-        pass
+        sum_Y = np.sum(gradient * self.Y, axis=1, keepdims=True)
+        return self.Y * (gradient - sum_Y)
 
 
-class Flatten:
+class Flatten(Layer):
     def __call__(self, X):
         self.shape = X.shape
         return X.reshape(X.shape[0], -1)
     def bp(self, gradient, **kwargs):
         return np.reshape(gradient, self.shape)
-    def step(self, alpha):
-        pass
 
 
-class Pooling:
+class Pooling(Layer):
     def __call__(self, X, k=2, stride=2):
         """
         :param X: input of shape (..., height, width)
@@ -93,11 +96,8 @@ class Pooling:
 
         return dX_flat.reshape(self.X_shape)
 
-    def step(self, alpha):
-        pass
 
-
-class CrossEntropyLoss:
+class CrossEntropyLoss(Layer):
     def __init__(self, model):
         self.model = model
 
@@ -128,7 +128,7 @@ class CrossEntropyLoss:
             gradient = layer.bp(gradient, backward=not is_last)
 
 
-class FullyConnectedLayer:
+class FullyConnectedLayer(Layer):
     def __init__(self, in_num, out_num):
         """
         :param in_num: input size
@@ -161,7 +161,7 @@ class FullyConnectedLayer:
         self.W -= self.W_grad * alpha
 
 
-class Conv2dLayer:
+class Conv2dLayer(Layer):
     def __init__(self, in_c, out_c, k, **kwargs):
         self.in_c = in_c
         self.out_c = out_c
@@ -270,6 +270,7 @@ class SimpleNetwork:
             Sigmoid(),
             Pooling(),
             Flatten(),
+            FullyConnectedLayer(13 * 13 * 10, 13 * 13 * 10),
             FullyConnectedLayer(13 * 13 * 10, 10),
             Softmax()
         ]

@@ -22,6 +22,7 @@ def get_mnist_loaders(
     data_dir: str = "./data",
     batch_size: int = 64,
     num_workers: int = 2,
+    shuffle_testset: bool = False,
 ) -> tuple[DataLoader, DataLoader]:
     """
     Return MNIST train and test DataLoaders. 
@@ -63,7 +64,7 @@ def get_mnist_loaders(
     test_loader = DataLoader(
         dataset=test_dataset,
         batch_size=batch_size,
-        shuffle=False,
+        shuffle=shuffle_testset,
         num_workers=num_workers,
         collate_fn=mnist_numpy_collate,
     )

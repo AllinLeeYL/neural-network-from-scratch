@@ -81,7 +81,8 @@ Consider an example where we have a handwritten digit image consisting of `28 ×
 
 ```mermaid
 graph LR
-    image -->|model| classification
+    image -->|layer1| M(Intermediate Output)
+    M -->|layer2| classification
 ```
 
 The process of moving data from the model input to the output is called **forward propagation**.
@@ -147,7 +148,7 @@ This loss function measures how far the model prediction is from the target.
 
 ### Backward Propagation
 
-With the help of a loss function, we have can express the equation from input to output as:
+With the help of a loss function, we have can express the equation from input to loss as:
 
 $$
 Loss = h(...g(f(x_1, x_2, \dots, w_1, w_2, \dots))...)

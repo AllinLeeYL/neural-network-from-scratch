@@ -35,11 +35,11 @@ def plot_handwriting_predictions(images, pred_labels, labels):
         )
 
     plt.tight_layout()
-    plt.savefig("output.png")
+    plt.savefig("prediction.jpg")
 
 
 def main():
-    _, test_loader = get_mnist_loaders(batch_size=4)
+    _, test_loader = get_mnist_loaders(batch_size=4, shuffle_testset=True)
     model = SimpleNetwork.load("mnist_model.pkl")
     images, labels = next(iter(test_loader))
 
