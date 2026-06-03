@@ -37,10 +37,16 @@ git clone https://github.com/AllinLeeYL/neural-network-from-scratch.git
 pip install torch torchvision matplotlib pickle # or: pip install -r requirements.txt
 ```
 
-4. Run the training script.
+4. Run the training script. The model with best performance will be saved.
 
 ```bash
 python3 train.py
+```
+
+5. Test the model. A `output.png` will be saved to show the images and predictions.
+
+```bash
+python3 test.py
 ```
 
 ## Notes
@@ -156,7 +162,7 @@ For each parameter, we need to determine both the direction and the size of the 
 Because derivatives can be calculated using **the chain rule**, we can first compute the derivative of the loss with respect to the final output:
 
 $$
-\frac{\partial loss}{\partial y} = \frac{\partial loss}{\partial y}
+\frac{\partial loss}{\partial y}
 $$
 
 And then use the derivative to calculate the derivate of weights for $y$.
@@ -165,7 +171,7 @@ $$
 \frac{\partial loss}{\partial w_y} = \frac{\partial loss}{\partial y}\frac{\partial y}{\partial w_y}
 $$
 
-In the meantime, we have to calculate the derivate of $x$, because we have to update the $w_x$.
+In the meantime, we have to calculate the derivate of $x$, because we have to move backward to the next layer.
 
 $$
 \frac{\partial loss}{\partial x} = \frac{\partial loss}{\partial y}\frac{\partial y}{\partial x}
