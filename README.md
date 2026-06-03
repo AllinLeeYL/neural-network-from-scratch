@@ -43,7 +43,7 @@ pip install torch torchvision matplotlib pickle # or: pip install -r requirement
 python3 train.py
 ```
 
-5. Test the model. A `output.png` will be saved to show the images and predictions.
+5. Test the model. Images and predictions will be saved to `prediction.jpg`.
 
 ```bash
 python3 test.py
